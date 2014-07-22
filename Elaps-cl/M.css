@@ -1,0 +1,270 @@
+.container{
+	width:1440px;
+	height:600px;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-left: 27.5px;
+	margin-right: 27.5px;
+	margin-top: 27.5px;
+
+}
+.div{
+	display:block;
+}
+#map-canvas{
+	position:relative;
+	top:5px;
+	background-color:green;
+	opacity:1;
+}
+.phone-user{
+	position: relative;
+	top:51px;
+	left:6px;
+	background-color: white;
+	opacity: 1;
+}
+/*form-horizontal*/
+.form-horizontal{
+	position: relative;
+	top:10px;
+}
+/*form-group*/
+.form-group{
+	position:relative;
+	top: 15px;
+}
+/* condition*/
+.condition{
+	border:2px solid #bdc3c7;
+	font-family: "Lato", Helvetica, Arial,sans-serif;
+	font-size:8px;
+	height:35px;
+	width:180px;
+	position:relative;
+	left:5px;
+}
+/*condition-list*/
+.condition-list{
+	font-size:12px;
+	text-align: center;
+	border-radius: 6px;
+	color:#ffffff;
+	width:220px;
+	height:315px;
+	position: relative;
+	left:-7px;
+	top:10px;
+}
+/*submit-btn*/
+#submit-btn{
+font-size:12px;
+	text-align: center;
+	border-radius: 6px;
+	color:#ffffff;
+	background-color: #1abc9c;
+	width:100px;
+	height:35px;
+	position: relative;
+	left:58px;
+	top:15px;
+	cursor: pointer;
+}
+#add-botton{
+	font-size:12px;
+	text-align: center;
+	border-radius: 6px;
+	color:#ffffff;
+	background-color: #1abc9c;
+	width:50px;
+	height:35px;
+	position: relative;
+	left:5px;
+	top:0px;
+	cursor: pointer;
+}
+#dest{
+font-family:Open Sans;
+font-size:18px;
+text-align: center;
+border-radius: 5px;
+color:#ffffff;
+background-color: #1abc9c;
+width:130px;
+height:35px;
+position: relative;
+left:250px;
+top:27px;
+cursor: pointer;
+}
+.destInput{
+	border:2px solid #bdc3c7;
+	/*font-family: "Lato", Helvetica, Arial,sans-serif;*/
+	font-family:Open Sans;
+	font-size:16px;
+	height:35px;
+	width:220px;
+	position:relative;
+	left:-300px;
+	border-radius: 6px;
+}
+#panel{
+		font-family:Open Sans;
+	    width:280px;
+	    height:38px;
+	    position: relative;
+        top: -13px;
+        left:410px;
+        margin-left: -180px;*/
+        z-index: 5;
+        background-color: #1abc9c;
+        padding: 5px;
+        border: 2px solid #bdc3c7;
+        border-radius: 6px;
+
+}
+#mode{
+	margin-left: 10px;
+}
+#end{
+	position: relative;
+	top:25px;
+	left:-55px;
+	border-radius: 6px;
+}
+.markerZone{
+	font-family:Open Sans;
+	color:#04B4AE;
+}
+
+.event{
+	border:2px solid #bdc3c7;
+	font-family: "Lato", Helvetica, Arial,sans-serif;
+	font-size: :8px;
+	height:35px;
+	width:170px;
+	position:relative;
+	left:20px;
+
+}
+.phone-event{
+	position: relative;
+	top:53px;
+	left:6px;
+	background-color: white;
+	opacity: 1;
+}
+#add-event{
+font-size:12px;
+text-align: center;
+border-radius: 6px;
+color:#ffffff;
+background-color: #1abc9c;
+width:50px;
+height:35px;
+position: relative;
+left:25px;
+top:0px;
+cursor: pointer;
+}
+
+
+
+#add-position{
+font-size:12px;
+text-align: center;
+border-radius: 6px;
+color:#ffffff;
+background-color: #1abc9c;
+width:50px;
+height:35px;
+position: relative;
+left:10.5px;
+top:12px;
+cursor: pointer;
+}
+.event-list{
+	font-size:12px;
+	text-align: center;
+	border-radius: 6px;
+	color:#ffffff;
+	width:220px;
+	height:280px;
+	position: relative;
+	left:10px;
+	top:30px;
+}
+
+#map-canvas{
+	position:relative;
+	top:40px;
+	left:-58px;
+	background-color:green;
+	opacity:1;
+}
+
+.cell{
+	position:relative;
+	height:50px;
+	width:50px;
+	border-radius: 0.1px;
+	border-style: solid;
+	border-color: black;
+	background-color: red;
+}
+.grid-area{
+	background-color: orange;
+	position: relative;
+	top:-700px;
+	height:600px;
+	width:765px;
+}
+
+.cell_row{
+	height:50px;
+	width:790px;
+	position:relative;
+	top:-600px;
+}
+#first_cell{
+	height:50px;
+	width:50px;
+	border-radius: 0.1px;
+	border-style: solid;
+	border-color: black;
+	background-color: red;
+	position:relative;
+	background-size: 50px 50px;
+	margin:0px;
+}
+
+#safe-region-btn{
+	position:relative;
+	top:25px;
+	left:680px;
+	text-align: center;
+	border-radius: 12px;
+	color:#ffffff;
+	background-color: #1abc9c;
+	width:50px;
+	height:35px;
+	cursor: pointer;
+
+}
+#mycanvas{
+	position: relative;
+	top:0px;
+	
+}
+#temp{
+	position:relative;
+	top:15px;
+	left:0px;
+	text-align: center;
+	border-radius: 12px;
+	color:#ffffff;
+	background-color: #1abc9c;
+	width:150px;
+	height:35px;
+	cursor: pointer;
+}

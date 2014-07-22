@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+	<!---link rel="shortcut icon" href="http://www.gpsvisualizer.com/favicon.ico" /> <!tab icon-->
+	
+	<link rel="shortcut icon" href="http://localhost/chenlu/Elaps-M/image/favicon.ico" />
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="M.css" rel="stylesheet">
+	<link href="stdtheme.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open Sans">
+	<title>Laps</title>
+
+<!--script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script-->
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCCiVgJbm-jORRRkkbgmt6wMLBe6ifRZhM&sensor=true">
+ 	var map;
+	var marker1;
+	var marker2;
+	var routePath;
+	var routePath_con;
+	var infowindow1;
+	var infowindow2;
+	var directionsDisplay;
+	var travel_mode;
+	var userPos;
+	var userMarker;
+	var movingIcon;
+	var movingMarker;
+	var safeRegion;
+	var toggle;
+</script>  <!--for M2.js-->
+<!--script src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false&amp;libraries=places"></script--><!--for M.js-->
+<script type ="text/javascript" src="javascript/epolys.js"></script>
+<!--script type ="text/javascript" src="M.js"></script-->
+<script type ="text/javascript" src="M3.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#stores').draggable();
+	});
+</script>
+
+</head>
+<body  class ="container" onload="initialize()">
+	<div class='row'>
+		<!--*************user ui******************-->
+		<!--                                      -->
+		<!--                                      -->
+		<!--*************user ui******************-->
+		<div class="col-md-3" style="background-image:url(nexus.jpg);background-size: 285px 600px;background-repeat:no-repeat;position:relative;top:45px;height:800px;width:360px;">
+			<!--container for user input-->
+			<div class="phone-user" style="height:475px;width:242px;">
+				<div class="col-sm-12">
+					<form class="form-horizontal" name="Form" action="backServer.jsp" method="POST" role="form">
+						<!--condition enter area-->
+						<div class="form-group">
+							<input type="text" class="condition" name="condition" placeholder="enter your interest condition" onkeydown="onkeyup1();" onkeyup="onkeyup1();">
+							<input type="botton" id="add-botton" value="Add" onclick="Add(condition)">
+						</div>
+						<!--entered condition display area-->
+						<div class="from-group">
+							<input type="text" class="condition-list" name="condition-list">
+						</div>
+						<div class="form-group">
+							<input type="botton" id="submit-btn" value="submit" name="submit" onclick="submit-list();">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+		<!--************* map dispaly ******************-->
+		<!--                                            -->
+		<!--                                            -->
+		<!--************* map display ******************-->
+
+		<div class="col-md-6" style="height:800px;width:720px;position:relative;left:-70px;">
+
+			<!--div id="map_canvas" style="width:115%;height:80%;"></div-->
+			<div id="map_canvas" style="width:790px;height:80%;Zindex:-1;"></div>
+				<!--coordinate div-->
+				<!--div id="coordiv" style="width:790px;height:640px;position:relative;top:-640px;border:1px solid #c3c3c3;background-color:red;opacity:0.1;" onmousemove="cnvs_getCoordinates(event)" onmouseout="cnvs_clearCoordinates()"></div-->
+				<!--small red cell place: color is transparent-->
+				
+			<div class="cell_row">
+					<canvas id="mycanvas"></canvas>	
+				</div>
+
+					<!--div id="xycoordinates" style="position:relative;top:-780px;left:0px background-color:green;font-size:70%;
+					font-family:verdana,helvetica,arial,sans-serif;"></div-->
+
+					<!--marker div-->
+					<div id="markers" style="position:relative; top:-35px; left:0px; width:500px; height:160px">
+						<div id="stores" style="position: relative; left: -4px; top: 9px; height: 32px; cursor: move; width: 32px; background-image:image/highhills.png;" class="ui-draggable">
+							<label for="stores" class="markerZone" style="width:70px;position:relative;left:40px;top:10px;">Stores</label>
+						</div>
+						<input style="display:none" name="pointhide" id="pointhide">
+						<input id="safe-region-btn" value="S" onclick="">
+						<!--input id="safe-region-btn" value="S" onclick="invisible()"-->
+
+						<!--for destination-->
+						<input style="display:none" name="start" id="start">
+						<input type="text" class="destInput" id="end" placeholder="Enter your destination" >
+						<input type="botton" id="dest" value="Go" onclick="calcRoute()" >
+						<!--travel mode-->
+						<div id="panel">
+							<b style='color:white;font-size:16px;'>Mode of Travel: </b>
+							<!--select id="mode" onchange="calcRoute();"-->
+							<select id="mode">
+								<option value="DRIVING">Driving</option>
+								<option value="WALKING">Walking</option>
+								<option value="BICYCLING">Bicycling</option>
+								<option value="TRANSIT">Transit</option>
+							</select>
+						</div>
+						<!--triger the change of marker shape-->
+						<input id="temp" value="Change Marker" onclick="afterMatch1()">
+						<!--triger the change of ui-->
+						<input id="temp" value="Change Interface" onclick="afterMatch2()">
+
+					</div>
+
+				</div>
+
+				<!--*************store ui******************-->
+				<!--                                       -->
+				<!--                                       -->
+				<!--*************store ui******************-->
+				<div class="col-md-3" style="background-image:url(nexus.jpg); background-size:285px 600px;background-repeat:no-repeat;background-position:relative; left:34px; top:45px;height:800px;width:360px;">
+					<div class="phone-event" style="height:475px;width:242px">
+						<form class="form-horizontal" name="Form" action="backServer.jsp" method="POST" role="form">
+							<!--condition enter area-->
+							<div class="form-group">
+								<input type="text" class="event" name="event"onkeydown="onkeyup1();" onkeyup="onkeyup1();">
+								<input type="botton" id="add-event" value="Add" onclick="Add(event)">
+							</div>
+							<!--entered condition display area-->
+							<div class="from-group">
+								<label for="lat" style="position:relative;left:5px;top:15px;"> Lat: </label>
+								<input type="text" id="lat" size="5" maxlength="6" style="position:relative;left:2.5px;top:15px;">
+
+								<label for="lng" style="position:relative;left:11px;top:15px;"> Lng: </label>
+								<input type="text" id="lng" size="5" maxlength="6" style="position:relative;left:7px;top:15px;">
+
+								<input type="text" class="event-list" name="event-list">
+
+								<!--submit-btn-->
+								<input type="botton" id="submit-btn" value="Upload Event" name="submit" style="position:relative;top:50px;" onclick="UploadEvent()";>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- scripts -->
+			<script type="text/javascript" src="javascript/jquery-1.js"></script>
+			<script type="text/javascript" src="javascript/jquery-1.10.2.min.js"></script>
+			<script type="text/javascript" src="javascript/jquery-ui-1.js"></script>
+			<script src="bootstrap/js/bootstrap.min.js"></script>
+			<script type="bootstrap/js/respond.js"></script>
+		</body>
+		</html>
