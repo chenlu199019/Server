@@ -13,9 +13,9 @@
 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open Sans">
 	<title>Laps</title>
 
-<!--script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script-->
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCCiVgJbm-jORRRkkbgmt6wMLBe6ifRZhM&sensor=true">
- 	var map;
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places">
+	/*<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCCiVgJbm-jORRRkkbgmt6wMLBe6ifRZhM&sensor=true">*/
+	var map;
 	var marker1;
 	var marker2;
 	var routePath;
@@ -29,18 +29,21 @@
 	var movingIcon;
 	var movingMarker;
 	var safeRegion;
-	var toggle;
+	var change;
+	var autocomplete;
+	var cur1;
+	var cur2;
 </script>  <!--for M2.js-->
 <!--script src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false&amp;libraries=places"></script--><!--for M.js-->
 <script type ="text/javascript" src="javascript/epolys.js"></script>
 <!--script type ="text/javascript" src="M.js"></script-->
-<script type ="text/javascript" src="M3.js"></script>
+<script type ="text/javascript" src="M4.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('#stores').draggable();
-	});
+$(document).ready(function(){
+	$('#stores').draggable();
+});
 </script>
 
 </head>
@@ -53,7 +56,8 @@
 		<div class="col-md-3" style="background-image:url(nexus.jpg);background-size: 285px 600px;background-repeat:no-repeat;position:relative;top:45px;height:800px;width:360px;">
 			<!--container for user input-->
 			<div class="phone-user" style="height:475px;width:242px;">
-				<div class="col-sm-12">
+				<!--part1-->
+				<div class="col-sm-12" id="part1" style="display:block;">
 					<form class="form-horizontal" name="Form" action="backServer.jsp" method="POST" role="form">
 						<!--condition enter area-->
 						<div class="form-group">
@@ -62,14 +66,84 @@
 						</div>
 						<!--entered condition display area-->
 						<div class="from-group">
-							<input type="text" class="condition-list" name="condition-list">
+							<textarea type="text" class="condition-list" name="condition-list"></textarea>
 						</div>
 						<div class="form-group">
 							<input type="botton" id="submit-btn" value="submit" name="submit" onclick="submit-list();">
 						</div>
 					</form>
 				</div>
-			</div>
+				<!--end of part 1-->
+
+				
+				<div class="panel panel-default" id="matchTitle" style="display:none;">
+					<div class="panel-body">
+						<font size="4" color="#FF8000">Matched Events:</font>
+					</div>
+				</div>
+				<!--cllapse part-->
+				<div class="panel-group" id="accordion" style="display:none;">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+									Collapsible Group Item #1
+								</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+							<div class="panel-body">
+								<div>Oragniser:</div>
+								<div>Location:</div>
+								<h>Info:</h>
+								<textarea>fuqpgo[qurgboreqbgirdbva'ldiwgg[whirgoevnihfjiannjiabib]].</textarea>
+								<figure>
+									<img src="image/2.jpg" alt="The Pulpit Rock" width="34" height="58">
+								</figure>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+									Collapsible Group Item #2
+								</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse">
+							<div class="panel-body">
+								Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute
+								<figure>
+									<img src="image/2.jpg" alt="The Pulpit Rock" width="34" height="58">
+								</figure> 
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+									Collapsible Group Item #3
+								</a>
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse">
+							<div class="panel-body">
+								aecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+								<figure>
+									<img src="image/2.jpg" alt="The Pulpit Rock" width="34" height="58">
+								</figure>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--part2-->
+
+				<!--end of part 2-->
+
+			</div>  <!--remain unchanged div-->
 		</div>
 
 
@@ -82,31 +156,30 @@
 
 			<!--div id="map_canvas" style="width:115%;height:80%;"></div-->
 			<div id="map_canvas" style="width:790px;height:80%;Zindex:-1;"></div>
-				<!--coordinate div-->
-				<!--div id="coordiv" style="width:790px;height:640px;position:relative;top:-640px;border:1px solid #c3c3c3;background-color:red;opacity:0.1;" onmousemove="cnvs_getCoordinates(event)" onmouseout="cnvs_clearCoordinates()"></div-->
-				<!--small red cell place: color is transparent-->
-				
+			<!--coordinate div-->
+			<!--div id="coordiv" style="width:790px;height:640px;position:relative;top:-640px;border:1px solid #c3c3c3;background-color:red;opacity:0.1;" onmousemove="cnvs_getCoordinates(event)" onmouseout="cnvs_clearCoordinates()"></div-->
+			<!--small red cell place: color is transparent-->
+
 			<div class="cell_row">
-					<canvas id="mycanvas"></canvas>	
-				</div>
+				<canvas id="mycanvas"></canvas>	
+			</div>
 
 					<!--div id="xycoordinates" style="position:relative;top:-780px;left:0px background-color:green;font-size:70%;
 					font-family:verdana,helvetica,arial,sans-serif;"></div-->
 
 					<!--marker div-->
 					<div id="markers" style="position:relative; top:-35px; left:0px; width:500px; height:160px">
-						<div id="stores" style="position: relative; left: -4px; top: 9px; height: 32px; cursor: move; width: 32px; background-image:image/highhills.png;" class="ui-draggable">
-							<label for="stores" class="markerZone" style="width:70px;position:relative;left:40px;top:10px;">Stores</label>
-						</div>
-						<input style="display:none" name="pointhide" id="pointhide">
-						<input id="safe-region-btn" value="S" onclick="">
-						<!--input id="safe-region-btn" value="S" onclick="invisible()"-->
+						
+						<input style="display:none" name="pointhide" id="pointhide" value="pointhide">
+						<input type="botton" id="safe-region-btn" value="Safe Region" onclick="toggle2()">
 
 						<!--for destination-->
-						<input style="display:none" name="start" id="start">
-						<input type="text" class="destInput" id="end" placeholder="Enter your destination" >
-						<input type="botton" id="dest" value="Go" onclick="calcRoute()" >
-						<!--travel mode-->
+						
+						<input style="display:none" class="frombox" type="text" id="start" name="start" maxlength='2048' value="">
+						<input type="text" name="starttext" class="frombox" id="starttext" maxlength='2048' value="From"
+						onkeydown="onkeyup1();" onkeyup="onkeyup1()" onfocus="javascript:if(this.value=='From')this.value='';">
+						<div class="auto_hidden" id="autostart"></div>
+	
 						<div id="panel">
 							<b style='color:white;font-size:16px;'>Mode of Travel: </b>
 							<!--select id="mode" onchange="calcRoute();"-->
@@ -117,13 +190,25 @@
 								<option value="TRANSIT">Transit</option>
 							</select>
 						</div>
+						
+						<input style="display:none" class="tobox" type="text" id="end" name="end" maxlength='2048'value="">
+						<input type="text"name="endtext" class="tobox" id="endtext"maxlength='2048' value="To"
+						onkeydown="onkeyup2();" onkeyup="onkeyup2()" onfocus="javascript:if(this.value=='To')this.value='';">
+						<div class="auto_hidden" id="autoend"></div>
+						
+
+						<input type="botton" id="launch" value="Search" onclick="calcRoute()" >
+
 						<!--triger the change of marker shape-->
 						<input id="temp" value="Change Marker" onclick="afterMatch1()">
 						<!--triger the change of ui-->
 						<input id="temp" value="Change Interface" onclick="afterMatch2()">
 
+						<div id="stores" style="position: relative; left:350px; top: -18px; height: 32px; cursor: move; width: 32px; background-image:url(image/highhills.png);" class="ui-draggable">
+							<label for="stores" class="markerZone" style="width:70px;position:relative;left:40px;top:10px;">Stores</label>
+						</div>
+						
 					</div>
-
 				</div>
 
 				<!--*************store ui******************-->
@@ -132,11 +217,11 @@
 				<!--*************store ui******************-->
 				<div class="col-md-3" style="background-image:url(nexus.jpg); background-size:285px 600px;background-repeat:no-repeat;background-position:relative; left:34px; top:45px;height:800px;width:360px;">
 					<div class="phone-event" style="height:475px;width:242px">
-						<form class="form-horizontal" name="Form" action="backServer.jsp" method="POST" role="form">
+						<form class="form-horizontal" name="Form" action="" method="POST" role="form">
 							<!--condition enter area-->
 							<div class="form-group">
-								<input type="text" class="event" name="event"onkeydown="onkeyup1();" onkeyup="onkeyup1();">
-								<input type="botton" id="add-event" value="Add" onclick="Add(event)">
+								<input type="text" class="event" id="newInfo">
+								<input type="botton" id="add-event" value="Add" onclick="addCon()">
 							</div>
 							<!--entered condition display area-->
 							<div class="from-group">
@@ -146,7 +231,7 @@
 								<label for="lng" style="position:relative;left:11px;top:15px;"> Lng: </label>
 								<input type="text" id="lng" size="5" maxlength="6" style="position:relative;left:7px;top:15px;">
 
-								<input type="text" class="event-list" name="event-list">
+								<textarea type="text" class="event-list" id="event_list" row="20"></textarea>
 
 								<!--submit-btn-->
 								<input type="botton" id="submit-btn" value="Upload Event" name="submit" style="position:relative;top:50px;" onclick="UploadEvent()";>

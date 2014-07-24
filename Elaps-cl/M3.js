@@ -1,18 +1,12 @@
 var directionsService = new google.maps.DirectionsService();
 function RoadControl(controlDiv) {
-
-  	// Set CSS styles for the DIV containing the control
-  	// Setting padding to 5 px will offset the control
-  	// from the edge of the map
   	controlDiv.style.padding = '5px';
-
   	// Set CSS for the control border
   	var controlUI = document.createElement('div');
   	controlUI.style.backgroundColor = 'white';
   	controlUI.style.borderStyle = 'solid';
   	controlUI.style.borderWidth = '2px';
   	controlDiv.appendChild(controlUI);
-
   	// Set CSS for the control interior
   	var controlText = document.createElement('div');
   	controlText.style.width = '263px';
@@ -21,7 +15,6 @@ function RoadControl(controlDiv) {
   	controlText.style.paddingRight = '4px';
   	controlText.style.background = 'url(image/road.jpg) no-repeat';
   	controlUI.appendChild(controlText);
-
   }
 
   function initialize(){
@@ -106,18 +99,12 @@ function RoadControl(controlDiv) {
 		ContextMenuControlDiv.index=1;
 	    //add a layer
 	    map.controls[google.maps.ControlPosition.TOP_LEFT].push(ContextMenuControlDiv);
-
-	    /////initiate the grid for safty region
-	    var gridControlDiv = document.createElement('DIV');
-	    var gridControl = new createGirdControl(gridControlDiv,map);
-	    gridControlDiv.index=1;
-	    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(gridControlDiv);
 	    toggle=0;
 	    
      }///////////////////////////////end of initialize function
 
 
-     function createContextMenu(controlUI,map){
+function createContextMenu(controlUI,map){
      	var contextmenu = document.createElement('DIV');
      	contextmenu.style.display = "none";
      	contextmenu.style.background = "#ffffff";
@@ -171,7 +158,8 @@ function calcRoute(){
 	document.getElementById("map_canvas").style.display="block";
 	var start = document.getElementById("start").value;
 	var end = document.getElementById("end").value;
-
+	console.log(start);
+	console.log(end);
 	var temp1 = start.split(",");
 	var temp2 = start.split(",");
 
@@ -249,7 +237,7 @@ function calcRoute(){
 		});
 }
 
-function createGirdControl(controlDiv,map){
+/*function createGirdControl(controlDiv,map){
   // Set CSS styles for the DIV containing the control
   // Setting padding to 5 px will offset the control
   // from the edge of the map
@@ -281,7 +269,7 @@ function createGirdControl(controlDiv,map){
   	if(toggle==1)
   		hide();
   });
-}
+}*/
 
 function generate_safeRegion(){ ///should pass in l and n value
 	var width = 0.005;
@@ -313,4 +301,11 @@ function show(){
 function hide(){
 	safeRegion.setMap(null);
 	toogle=0;
+}
+
+function toggle(){
+	if(toggle==0)
+		show();
+	if(toggle==1)
+		hide();
 }

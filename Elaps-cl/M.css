@@ -47,14 +47,15 @@
 /*condition-list*/
 .condition-list{
 	font-size:12px;
-	text-align: center;
+	text-align: left;
 	border-radius: 6px;
-	color:#ffffff;
+	background-color:#ffffff;
 	width:220px;
 	height:315px;
 	position: relative;
 	left:-7px;
 	top:10px;
+	line-height: 200%;
 }
 /*submit-btn*/
 #submit-btn{
@@ -83,7 +84,7 @@ font-size:12px;
 	top:0px;
 	cursor: pointer;
 }
-#dest{
+#launch{
 font-family:Open Sans;
 font-size:18px;
 text-align: center;
@@ -93,28 +94,41 @@ background-color: #1abc9c;
 width:130px;
 height:35px;
 position: relative;
-left:250px;
-top:27px;
+left:280px;
+top:-45px;
 cursor: pointer;
 }
-.destInput{
+
+.frombox{
 	border:2px solid #bdc3c7;
-	/*font-family: "Lato", Helvetica, Arial,sans-serif;*/
 	font-family:Open Sans;
 	font-size:16px;
 	height:35px;
 	width:220px;
 	position:relative;
-	left:-300px;
+	left:-110px;
+	top:0px;
 	border-radius: 6px;
 }
+.tobox{
+	border:2px solid #bdc3c7;
+	font-family:Open Sans;
+	font-size:16px;
+	height:35px;
+	width:220px;
+	position:relative;
+	left:5px;
+	top:-32px;
+	border-radius: 6px;
+}
+
 #panel{
 		font-family:Open Sans;
-	    width:280px;
+	    width:250px;
 	    height:38px;
 	    position: relative;
-        top: -13px;
-        left:410px;
+        top: -10px;
+        left:420px;
         margin-left: -180px;*/
         z-index: 5;
         background-color: #1abc9c;
@@ -169,7 +183,6 @@ cursor: pointer;
 }
 
 
-
 #add-position{
 font-size:12px;
 text-align: center;
@@ -185,14 +198,16 @@ cursor: pointer;
 }
 .event-list{
 	font-size:12px;
-	text-align: center;
+	font-color:black;
+	text-align: left;
 	border-radius: 6px;
-	color:#ffffff;
+	background-color:#ffffff;
 	width:220px;
 	height:280px;
 	position: relative;
 	left:10px;
 	top:30px;
+	line-height: 200%;
 }
 
 #map-canvas{
@@ -239,14 +254,16 @@ cursor: pointer;
 }
 
 #safe-region-btn{
+	font-family:Open Sans;
 	position:relative;
-	top:25px;
-	left:680px;
+	font-size:16px;
+	top:28px;
+	left:650px;
 	text-align: center;
-	border-radius: 12px;
+	border-radius: 5px;
 	color:#ffffff;
 	background-color: #1abc9c;
-	width:50px;
+	width:110px;
 	height:35px;
 	cursor: pointer;
 
@@ -268,3 +285,30 @@ cursor: pointer;
 	height:35px;
 	cursor: pointer;
 }
+
+.auto_hidden {
+    width:204px;border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    position:absolute;
+    display:none;
+}
+.auto_show {
+    width:204px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    position:absolute;
+    z-index:9999;
+    display:block;
+    max-height: 170px;
+    overflow: auto;
+}
+
+.intro{
+      font-size: 14px;
+      font-family: "Open Sans";
+      color:red;
+ }
