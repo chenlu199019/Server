@@ -129,16 +129,17 @@ var myLatlng = new google.maps.LatLng(1.295053, 103.773846);
   contextmenu.style.display = "none";   
   contextmenu.style.background = "#ffffff";   
   contextmenu.style.border = "10px solid #FFFFFF";
+  contextmenu.style.border = 
   contextmenu.innerHTML =    
-  "<a href='javascript:choosestart()'><div class='context' style='margin-bottom:5px'> start point </div></a>"
-  + "<a href='#' onclick='javascript:chooseend()'><div class='context'> end point </div></a>"
-  + "<a href='#' onclick='javascript:add()'><div class='context'> end point </div></a>";
+  "<a href='javascript:choosestart()'><div class='context' style='margin-bottom:0px'><b> start point</b> </div></a>"
+  + "<a href='#' onclick='javascript:chooseend()'><div class='context'><b> end point</b> </div></a>"
+  + "<a href='#' onclick='add()'><div class='context'> <b>Add new event</b> </div></a>";
   controlUI.appendChild(contextmenu);   
   /*给整个地图增加右键事件监听*/  
   google.maps.event.addDomListener(map, 'rightclick', function (event) {   
     right_para1=event.latLng.lat();
     right_para2=event.latLng.lng();
-    console.log(right_para1+", "+right_para2);
+    //console.log(right_para1+", "+right_para2);
     document.getElementById("pointhide").value = event.latLng.lat() + "," + event.latLng.lng();
         //结束 方法详细内容   
         contextmenu.style.position="relative";   
@@ -176,6 +177,34 @@ function chooseend(lat,lng)
   var temp2 = endq.split(",");
   marker2.set('position',new google.maps.LatLng(parseFloat(temp2[0]), parseFloat(temp2[1])));
   marker2.setMap(map);
+}
+
+function add(){
+ //console.log("enter addMarker function");
+ var location = new google.maps.LatLng(right_para1,right_para2);
+ console.log(right_para1+" "+right_para2);
+ console.log(location);
+  var marker = new google.maps.Marker({
+    position:location,
+    map:map,
+    draggable:true
+  });
+  var a=location.lat();
+  var b=location.lng();
+  var S=setContent(a,b);
+  
+  var win = new google.maps.InfoWindow({
+    content:S,
+  });
+  win.open(map,marker);  
+
+     google.maps.event.addListener(marker,'drag',function(event){
+      var S2=setContent(event.latLng.lat(),event.latLng.lng());
+      win.setContent(S2);
+    });
+     google.maps.event.addListener(win,'closeclick',function(){
+      marker.setMap(null);
+    });
 }
 
 function calcRoute() {
@@ -258,6 +287,10 @@ function calcRoute() {
     destination:new google.maps.LatLng(parseFloat(temp2[0]), parseFloat(temp2[1])),
     travelMode:travel_mode
   };
+
+  //////set an info window to the moving marker
+  var altInfowindow = new google.maps.InfoWindow();
+  altInfowindow.open(map,movingMarker);
   
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
@@ -284,6 +317,7 @@ function calcRoute() {
           function resetMkPoint(i){
             movingMarker.set('position',Coordinates[i]);
             subjectPoint.setPoint="Coordinates[i]";
+            altInfowindow.setContent((Coordinates[i]).toString());
             if(i < pathsnum){
               setTimeout(function(){
                 i++;
@@ -296,6 +330,8 @@ function calcRoute() {
             resetMkPoint(0);
         //console.log(i);
              },550);    //////550 is alower than 150
+
+          
 
         }
       });
@@ -399,33 +435,7 @@ function afterMatch2(){
 }
 
 
-function add(){
- //console.log("enter addMarker function");
- location = new google.maps.LatLng(right_para1,right_para2);
- console.log(right_para1+" "+right_para2);
- console.log(location);
-  var marker = new google.maps.Marker({
-    position:location,
-    map:map,
-    draggable:true
-  });
-  var a=location.lat();
-  var b=location.lng();
-  var S=setContent(a,b);
-  
-  var win = new google.maps.InfoWindow({
-    content:S,
-  });
-  win.open(map,marker);  
 
- google.maps.event.addListener(marker,'drag',function(event){
-  var S2=setContent(event.latLng.lat(),event.latLng.lng());
-  win.setContent(S2);
-});
- google.maps.event.addListener(win,'closeclick',function(){
-  marker.setMap(null);
-});
-}
 
 function setContent(a,b){
  var contentS = "<div class='infowindow'>";
