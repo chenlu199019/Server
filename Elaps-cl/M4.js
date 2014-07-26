@@ -23,15 +23,11 @@ function RoadControl(controlDiv) {
 
   function initialize(){
     directionsDisplay = new google.maps.DirectionsRenderer();
-    //autocomplete = new google.maps.places.Autocomplete(
-      //(document.getElementById("starttext")), {types:['geocode']});
+    //var myLatlng = new google.maps.LatLng(1.295053, 103.773846);
+    var myLatlng;
 
-var myLatlng = new google.maps.LatLng(1.295053, 103.773846);
-    //var myLatlng = new google.maps.LatLng();
-    //geolocate(myLatlng);
-    //console.log(myLatlng);
     var mapOptions = {
-      center: myLatlng,
+      //center: myLatlng,
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       scaleControl: true,
@@ -41,13 +37,30 @@ var myLatlng = new google.maps.LatLng(1.295053, 103.773846);
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-    // show the lat lng along mouse move
-    /*var positionString = '<div>'+
-    '<span id="latspan"></span>'+
-    '<span id="lngspan"></span>'+
-    '</div>';
-    var positionIndication = new google.maps.InfoWindow();*/
-    // add the road control picture on the map
+    ///////get current location
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+          myLatlng = new google.maps.LatLng(position.coords.latitude,
+          position.coords.longitude);
+         /* var userMarker = new google.maps.Marker({
+          map: map,
+          position: myLatlng,
+          animation: google.maps.Animation.DROP,
+          draggable: true,
+          title:"User Location"
+        });
+           userMarker.setMap(map);
+           userMarker.setIcon('image/male-2.png');*/
+        map.setCenter(myLatlng);
+      }, 
+       function() {
+      handleNoGeolocation(true);
+      });
+       } else {
+      handleNoGeolocation(false);}
+      ////////////////// end of get current location
+
+    
     var roadControlDiv = document.createElement('div');
     var roadControl = new RoadControl(roadControlDiv);
     roadControlDiv.index = 1;
@@ -133,7 +146,7 @@ var myLatlng = new google.maps.LatLng(1.295053, 103.773846);
   contextmenu.innerHTML =    
   "<a href='javascript:choosestart()'><div class='context' style='margin-bottom:0px'><b> start point</b> </div></a>"
   + "<a href='#' onclick='javascript:chooseend()'><div class='context'><b> end point</b> </div></a>"
-  + "<a href='#' onclick='add()'><div class='context'> <b>Add new event</b> </div></a>";
+  + "<a href='#' onclick='add2()'><div class='context'> <b>Add new event</b> </div></a>";
   controlUI.appendChild(contextmenu);   
   /*给整个地图增加右键事件监听*/  
   google.maps.event.addDomListener(map, 'rightclick', function (event) {   
@@ -180,24 +193,19 @@ function chooseend(lat,lng)
 }
 
 function add(){
- //console.log("enter addMarker function");
  var location = new google.maps.LatLng(right_para1,right_para2);
- console.log(right_para1+" "+right_para2);
- console.log(location);
   var marker = new google.maps.Marker({
     position:location,
     map:map,
     draggable:true
   });
-  var a=location.lat();
-  var b=location.lng();
-  var S=setContent(a,b);
+  
+  var S=setContent(location.lat(),location.lng());
   
   var win = new google.maps.InfoWindow({
     content:S,
   });
   win.open(map,marker);  
-
      google.maps.event.addListener(marker,'drag',function(event){
       var S2=setContent(event.latLng.lat(),event.latLng.lng());
       win.setContent(S2);
@@ -205,6 +213,81 @@ function add(){
      google.maps.event.addListener(win,'closeclick',function(){
       marker.setMap(null);
     });
+}
+
+function add2(){
+var location = new google.maps.LatLng(right_para1,right_para2);
+var marker = createEditableMarker({
+  position:location,
+  html:setContent(location.lat(),location.lng()),
+  draggable:true,
+  map:map
+});
+}
+
+function createEditableMarker(options){
+  var marker = new google.maps.Marker(options);
+  marker.set("editing",false);
+  var htmlBox = document.createElement("div");
+  htmlBox.innerHTML = options.html || "";
+  htmlBox.style.width = "300px";
+  htmlBox.style.height ="100px";
+
+  var textBox = document.createElement("textarea");
+  textBox.innerText = options.html || "";
+  textBox.style.width = "300px";
+  textBox.style.height = "100px";
+  textBox.style.display = "none";
+
+  var container = document.createElement("div");
+  container.style.position = "relative";
+  container.appendChild(htmlBox);
+  container.appendChild(textBox);
+  
+  var editBtn = document.createElement("button");
+  editBtn.innerText = "Edit";
+  container.appendChild(editBtn);
+
+  var win = new google.maps.InfoWindow({
+    content:container
+  });
+
+  win.open(map,marker);  
+     google.maps.event.addListener(marker,'drag',function(event){
+      var S2=setContent(event.latLng.lat(),event.latLng.lng());
+      options.html=S2;
+    });
+     google.maps.event.addListener(win,'closeclick',function(){
+      marker.setMap(null);
+    });
+
+     google.maps.event.addDomListener(editBtn, "click", function() {
+      marker.set("editing", !marker.editing);
+    });
+    
+    //(11)A (property)_changed event occur when the property is changed.
+    google.maps.event.addListener(marker, "editing_changed", function(){
+      textBox.style.display = this.editing ? "block" : "none";
+      htmlBox.style.display = this.editing ? "none" : "block";
+    });
+    
+    //(12)A change DOM event occur when the textarea is changed, then set the value into htmlBox.
+    google.maps.event.addDomListener(textBox, "change", function(){
+      htmlBox.innerHTML = textBox.value;
+      marker.set("html", textBox.value);
+    });
+    return marker;
+
+}
+
+
+
+
+function setContent(a,b){
+ var contentS = "<div class='infowindow'>";
+ contentS += "Latitude: " + a + "<br/>";
+ contentS += "Longitude: " + b+ "</div>";
+ return contentS;
 }
 
 function calcRoute() {
@@ -437,9 +520,3 @@ function afterMatch2(){
 
 
 
-function setContent(a,b){
- var contentS = "<div class='infowindow'>";
- contentS += "Latitude: " + a + "<br/>";
- contentS += "Longitude: " + b+ "</div>";
- return contentS;
-}
