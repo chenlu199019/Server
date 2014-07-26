@@ -76,7 +76,6 @@ function RoadControl(controlDiv) {
     //////click to add marker on map
     
 
-
     ////////// end of click to put marker
 
     ///create two markers
@@ -133,6 +132,7 @@ function RoadControl(controlDiv) {
 
     change=false;
     generate_safeRegion();
+    count=0;
 
 
  }////////////////////////// end of initialize function
@@ -146,7 +146,7 @@ function RoadControl(controlDiv) {
   contextmenu.innerHTML =    
   "<a href='javascript:choosestart()'><div class='context' style='margin-bottom:0px'><b> start point</b> </div></a>"
   + "<a href='#' onclick='javascript:chooseend()'><div class='context'><b> end point</b> </div></a>"
-  + "<a href='#' onclick='add2()'><div class='context'> <b>Add new event</b> </div></a>";
+  + "<a href='#' onclick='createEditableMarker()'><div class='context'> <b>Add new event</b> </div></a>";
   controlUI.appendChild(contextmenu);   
   /*给整个地图增加右键事件监听*/  
   google.maps.event.addDomListener(map, 'rightclick', function (event) {   
@@ -215,26 +215,22 @@ function add(){
     });
 }
 
-function add2(){
-var location = new google.maps.LatLng(right_para1,right_para2);
-var marker = createEditableMarker({
-  position:location,
-  html:setContent(location.lat(),location.lng()),
-  draggable:true,
-  map:map
-});
-}
-
-function createEditableMarker(options){
-  var marker = new google.maps.Marker(options);
+function createEditableMarker(){
+  var location = new google.maps.LatLng(right_para1,right_para2);
+  var marker = new google.maps.Marker({
+    position:location,
+    html:setContent(location.lat(),location.lng()),
+    draggable:true,
+    map:map
+  });
   marker.set("editing",false);
   var htmlBox = document.createElement("div");
-  htmlBox.innerHTML = options.html || "";
+  htmlBox.innerHTML = marker.html || "";
   htmlBox.style.width = "300px";
   htmlBox.style.height ="100px";
 
   var textBox = document.createElement("textarea");
-  textBox.innerText = options.html || "";
+  textBox.innerText = marker.html || "";
   textBox.style.width = "300px";
   textBox.style.height = "100px";
   textBox.style.display = "none";
@@ -255,7 +251,8 @@ function createEditableMarker(options){
   win.open(map,marker);  
      google.maps.event.addListener(marker,'drag',function(event){
       var S2=setContent(event.latLng.lat(),event.latLng.lng());
-      options.html=S2;
+       textBox.innerText = S2;
+        htmlBox.innerHTML =S2;
     });
      google.maps.event.addListener(win,'closeclick',function(){
       marker.setMap(null);
@@ -277,17 +274,14 @@ function createEditableMarker(options){
       marker.set("html", textBox.value);
     });
     return marker;
-
 }
 
-
-
-
 function setContent(a,b){
- var contentS = "<div class='infowindow'>";
- contentS += "Latitude: " + a + "<br/>";
- contentS += "Longitude: " + b+ "</div>";
- return contentS;
+ //var contentS = "<div class='infowindow'>";
+ //contentS += "Latitude: " + a + "<br/>";
+ //contentS += "Longitude: " + b+ "</div>";
+ //return contentS;
+ return (a+" , "+b).toString();
 }
 
 function calcRoute() {
@@ -461,22 +455,25 @@ function toggle2(){
 }
 
 function UploadEvent(){
+  count=0;////reset count to 0 for cating next event title
   var lat = document.getElementById("lat").value;
   var lng = document.getElementById("lng").value;
   var myLatlng = new google.maps.LatLng(lat,lng);
   //var myInfo = new google.maps.InfoWindow({size: new google.maps.Size(150,50)});
 
+  var listContent = document.getElementById("event_list").value;
+  var len1 = Title.length;
+  listContent = listContent.substr(len1);
+  listContent = listContent.replace(/(?:\r\n|\r|\n)/g, '<br />');
   var contentString = '<div style="height:150px;width:250px;">'+
-  '<h3>Title</h3>'+
+  '<h3>'+Title+'</h3>'+
   '<div id="bodyContent">'+
-  //'<p>'+
-  document.getElementById("event_list").value+
- // '</p>' +
+  listContent+
  '</div>'+
  '</div>';
 
   //var contentString = document.getElementById("event_list").value;
-
+  document.getElementById("event_list").value="Event Deplyed Successfully.";
   var infowindow = new google.maps.InfoWindow({
     content: contentString
   });
@@ -497,9 +494,16 @@ function UploadEvent(){
 
 ///////add the conditions of event on the display area
 function addCon(){
+  
   var newInfo = document.getElementById("newInfo").value+"\n";
+if(count==0){
+Title=newInfo.toString();
+document.getElementById("newInfo").placeholder = "Enter Event Details";
+}
+
   $('#event_list').val($('#event_list').val()+newInfo);
   document.getElementById("newInfo").value="";
+count++;
 
 }
 

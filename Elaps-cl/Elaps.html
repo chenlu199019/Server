@@ -34,6 +34,8 @@
 	var right_para1;
 	var right_para2;
 	var controlText ;
+	var count;
+	var Title; //for event title
 </script>  <!--for M2.js-->
 <!--script src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false&amp;libraries=places"></script--><!--for M.js-->
 <script type ="text/javascript" src="javascript/epolys.js"></script>
@@ -63,14 +65,14 @@ $(document).ready(function(){
 						<!--condition enter area-->
 						<div class="form-group">
 							<input type="text" class="condition" name="condition" placeholder="enter your interest condition" onkeydown="onkeyup1();" onkeyup="onkeyup1();">
-							<input type="botton" id="add-botton" value="Add" onclick="Add(condition)">
+							<button type="button" id="add-botton"onclick="Add(condition)">Add</button>
 						</div>
 						<!--entered condition display area-->
 						<div class="from-group">
 							<textarea type="text" class="condition-list" name="condition-list"></textarea>
 						</div>
 						<div class="form-group">
-							<input type="botton" id="submit-btn" value="submit" name="submit" onclick="submit-list();">
+							<button type="button" id="submit-btn"name="submit" onclick="submit-list();">Submit</button>
 						</div>
 					</form>
 				</div>
@@ -221,21 +223,21 @@ $(document).ready(function(){
 						<form class="form-horizontal" name="Form" action="" method="POST" role="form">
 							<!--condition enter area-->
 							<div class="form-group">
-								<input type="text" class="event" id="newInfo">
-								<input type="botton" id="add-event" value="Add" onclick="addCon()">
+								<input type="text" class="event" id="newInfo" placeholder="Enter Organiser first">
+								<button type="button" id="add-event"onclick="addCon()">Add</button>
 							</div>
 							<!--entered condition display area-->
 							<div class="from-group">
 								<label for="lat" style="position:relative;left:5px;top:15px;"> Lat: </label>
-								<input type="text" id="lat" size="5" maxlength="6" style="position:relative;left:2.5px;top:15px;">
+								<input type="text" id="lat" size="5" maxlength="6" style="position:relative;left:2.5px;top:15px;" value="1.295053">
 
 								<label for="lng" style="position:relative;left:11px;top:15px;"> Lng: </label>
-								<input type="text" id="lng" size="5" maxlength="6" style="position:relative;left:7px;top:15px;">
+								<input type="text" id="lng" size="5" maxlength="6" style="position:relative;left:7px;top:15px;" value="103.773846">
 
 								<textarea type="text" class="event-list" id="event_list" row="20"></textarea>
 
 								<!--submit-btn-->
-								<input type="botton" id="submit-btn" value="Upload Event" name="submit" style="position:relative;top:50px;" onclick="UploadEvent()";>
+								<button type="button" id="submit-btn" name="submit" style="position:relative;top:50px;" onclick="UploadEvent()";>Submit</button>
 
 							</div>
 						</form>
