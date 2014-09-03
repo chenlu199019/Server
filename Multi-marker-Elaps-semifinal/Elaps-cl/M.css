@@ -38,7 +38,7 @@
 .condition{
 	border:2px solid #bdc3c7;
 	font-family: "Lato", Helvetica, Arial,sans-serif;
-	font-size:8px;
+	font-size:12px;
 	height:35px;
 	width:180px;
 	position:relative;
@@ -51,14 +51,14 @@
 	border-radius: 6px;
 	background-color:#ffffff;
 	width:220px;
-	height:315px;
+	height:280px;
 	position: relative;
 	left:-7px;
-	top:10px;
+	top:20px;
 	line-height: 200%;
 }
 /*submit-btn*/
-#submit-btn{
+#submit-btn1{
 font-size:12px;
 	text-align: center;
 	border-radius: 6px;
@@ -68,7 +68,20 @@ font-size:12px;
 	height:35px;
 	position: relative;
 	left:58px;
-	top:15px;
+	top:20px;
+	cursor: pointer;
+}
+#submit-btn2{
+font-size:12px;
+	text-align: center;
+	border-radius: 6px;
+	color:#ffffff;
+	background-color: #1abc9c;
+	width:100px;
+	height:35px;
+	position: relative;
+	left:58px;
+	top:20px;
 	cursor: pointer;
 }
 #add-botton{
@@ -101,18 +114,18 @@ cursor: pointer;
 
 .frombox{
 	border:2px solid #bdc3c7;
-	font-family:Open Sans;
+	font-family:Arial;
 	font-size:16px;
 	height:35px;
 	width:220px;
 	position:relative;
-	left:-110px;
+	left:5px;
 	top:0px;
 	border-radius: 6px;
 }
 .tobox{
 	border:2px solid #bdc3c7;
-	font-family:Open Sans;
+	font-family:Arial;
 	font-size:16px;
 	height:35px;
 	width:220px;
@@ -123,8 +136,8 @@ cursor: pointer;
 }
 
 #panel{
-		font-family:Open Sans;
-	    width:250px;
+		font-family:Arial;
+	    width:230px;
 	    height:38px;
 	    position: relative;
         top: -10px;
@@ -137,8 +150,53 @@ cursor: pointer;
         border-radius: 6px;
 
 }
+#panel2{
+		font-family:Arial;
+	    width:120px;
+	    height:38px;
+	    position: relative;
+        top: -83px;
+        left:655px;
+        margin-left: -180px;*/
+        z-index: 5;
+        background-color: #1abc9c;
+        padding: 5px;
+        border: 2px solid #bdc3c7;
+        border-radius: 6px;
+
+}
+#panel3{
+		font-family:Arial;
+	    width:220px;
+	    height:38px;
+	    position: relative;
+        top: 62px;
+        left:780px;
+        margin-left: -180px;*/
+        z-index: 5;
+        background-color: #1abc9c;
+        padding: 5px;
+        border: 2px solid #bdc3c7;
+        border-radius: 6px;
+
+}
+#interest_region{
+	    font-family:Arial;
+	    width:200px;
+	    height:40px;
+	    position: relative;
+        top: 10px;
+        left:-10px;
+        z-index: 5;
+}
+
 #mode{
 	margin-left: 10px;
+}
+#gear{
+	margin-left:0px;
+	width:40px;
+
 }
 #end{
 	position: relative;
@@ -196,7 +254,20 @@ left:10.5px;
 top:12px;
 cursor: pointer;
 }
-.event-list{
+#event_list{
+	font-size:12px;
+	font-color:black;
+	text-align: left;
+	border-radius: 6px;
+	background-color:#ffffff;
+	width:220px;
+	height:280px;
+	position: relative;
+	left:10px;
+	top:30px;
+	line-height: 200%;
+}
+#interest_list{
 	font-size:12px;
 	font-color:black;
 	text-align: left;
@@ -268,11 +339,7 @@ cursor: pointer;
 	cursor: pointer;
 
 }
-#mycanvas{
-	position: relative;
-	top:0px;
-	
-}
+
 #temp{
 	position:relative;
 	top:15px;

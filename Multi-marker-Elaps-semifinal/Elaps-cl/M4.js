@@ -72,57 +72,10 @@ function RoadControl(controlDiv) {
       controlText.innerHTML=place;
     });
 
-    //////////// end of position indication 
-    //////click to add marker on map
-    
-
-    ////////// end of click to put marker
-
-    ///create two markers
-    marker1 = new google.maps.Marker({
-      draggable:true,
-      animation: google.maps.Animation.DROP,
-      title: 'start point'
-    });
-    google.maps.event.addListener(marker1, 'click', function(){
-      if (marker1.getAnimation() != null) {
-        marker1.setAnimation(null);
-      } else {
-        marker1.setAnimation(google.maps.Animation.BOUNCE);
-      }
-    });
-
-
-    marker2 = new google.maps.Marker({
-      draggable:true,
-      animation: google.maps.Animation.DROP,
-      title: 'end point'
-    });
-    google.maps.event.addListener(marker2, 'click', function(){
-      if (marker2.getAnimation() != null) {
-        marker2.setAnimation(null);
-      } else {
-        marker2.setAnimation(google.maps.Animation.BOUNCE);
-      }
-    });
-    infowindow1 = new google.maps.InfoWindow({});
-    infowindow2 = new google.maps.InfoWindow({});
-    
-    google.maps.event.addListener(marker1, 'click', function(){
-      infowindow1.open(map,marker1);
-    });
-
-    google.maps.event.addListener(marker2, 'click', function(){
-      infowindow2.open(map,marker2);
-    });
-
-    routePath = new google.maps.Polyline({
-      strokeColor: "#272727",
-      strokeOpacity: 0.7,
-      strokeWeight: 5,
-      visible: true,
-    });
+    CoordinatesSet = new Array();
     routePath_con = new Array();
+
+    
 
     ////initialize right click to set the starting and ending place
     var ContextMenuControlDiv = document.createElement('DIV');   
@@ -133,6 +86,7 @@ function RoadControl(controlDiv) {
     change=false;
     generate_safeRegion();
     count=0;
+    finish=true;
 
 
  }////////////////////////// end of initialize function
@@ -148,19 +102,19 @@ function RoadControl(controlDiv) {
   + "<a href='#' onclick='javascript:chooseend()'><div class='context'><b> end point</b> </div></a>"
   + "<a href='#' onclick='createEditableMarker()'><div class='context'> <b>Add new event</b> </div></a>";
   controlUI.appendChild(contextmenu);   
-  /*给整个地图增加右键事件监听*/  
+   
   google.maps.event.addDomListener(map, 'rightclick', function (event) {   
     right_para1=event.latLng.lat();
     right_para2=event.latLng.lng();
-    //console.log(right_para1+", "+right_para2);
+   
     document.getElementById("pointhide").value = event.latLng.lat() + "," + event.latLng.lng();
-        //结束 方法详细内容   
+     
         contextmenu.style.position="relative";   
-        contextmenu.style.left=(event.pixel.x-80)+"px"; //平移显示以对应右键点击坐标   
+        contextmenu.style.left=(event.pixel.x-80)+"px";   
         contextmenu.style.top=event.pixel.y+"px";   
         contextmenu.style.display = "block"; 
       });   
-  /*点击菜单层中的某一个菜单项，就隐藏菜单*/  
+ 
   google.maps.event.addDomListener(controlUI, 'click', function () {   
     contextmenu.style.display = "none";   
   });   
@@ -179,6 +133,22 @@ function choosestart()
   document.getElementById("start").value = document.getElementById("pointhide").value;
   var startq=document.getElementById('start').value;
   var temp1 = startq.split(",");
+  var marker1 = new google.maps.Marker({
+      draggable:true,
+      animation: google.maps.Animation.DROP,
+      title: 'start point'
+    });
+   google.maps.event.addListener(marker1, 'click', function(){
+      if (marker1.getAnimation() != null) {
+        marker1.setAnimation(null);
+      } else {
+        marker1.setAnimation(google.maps.Animation.BOUNCE);
+      }
+    });
+   var  infowindow1 = new google.maps.InfoWindow({});
+   google.maps.event.addListener(marker1, 'click', function(){
+      infowindow1.open(map,marker1);
+    });
   marker1.set('position',new google.maps.LatLng(parseFloat(temp1[0]), parseFloat(temp1[1])));
   marker1.setMap(map);
 }
@@ -188,8 +158,24 @@ function chooseend(lat,lng)
   document.getElementById("end").value = document.getElementById("pointhide").value;
   var endq=document.getElementById('end').value;
   var temp2 = endq.split(",");
-  marker2.set('position',new google.maps.LatLng(parseFloat(temp2[0]), parseFloat(temp2[1])));
-  marker2.setMap(map);
+  var marker2 = new google.maps.Marker({
+      draggable:true,
+      animation: google.maps.Animation.DROP,
+      title: 'end point'
+    });
+    google.maps.event.addListener(marker2, 'click', function(){
+      if (marker2.getAnimation() != null) {
+        marker2.setAnimation(null);
+      } else {
+        marker2.setAnimation(google.maps.Animation.BOUNCE);
+      }
+    });
+    var infowindow2 = new google.maps.InfoWindow({});
+    google.maps.event.addListener(marker2, 'click', function(){
+      infowindow2.open(map,marker2);
+    });
+    marker2.set('position',new google.maps.LatLng(parseFloat(temp2[0]), parseFloat(temp2[1])));
+    marker2.setMap(map);
 }
 
 function add(){
@@ -283,11 +269,23 @@ function setContent(a,b){
  //return contentS;
  return (a+" , "+b).toString();
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function calcRoute() {
-  document.getElementById("map_canvas").style.display = "block";
-  var s1 = document.getElementById('start').value;
-  var s2 = document.getElementById('starttext').value;
+  var infowindow1;
+  var infowindow2;
+  var travel_mode;
+  var movingIcon;
+  var movingMarker;
+  var altInfowindow ;
+
+  var  routePath = new google.maps.Polyline({
+      strokeColor: "#272727",
+      strokeOpacity: 0.7,
+      strokeWeight: 5,
+      visible: true,
+    });
+
+ // document.getElementById("map_canvas").style.display = "block";
 
 
   var start;
@@ -306,16 +304,11 @@ function calcRoute() {
   var temp1 = start.split(",");
   var temp2 = end.split(",");
   
-  marker1.set('position',new google.maps.LatLng(parseFloat(temp1[0]), parseFloat(temp1[1])));
-  marker1.setMap(map);
-  
-  marker2.set('position',new google.maps.LatLng(parseFloat(temp2[0]), parseFloat(temp2[1])));
-  marker2.setMap(map);
-  
   map.setCenter(new google.maps.LatLng((parseFloat(temp1[0])+parseFloat(temp2[0]))/2, (parseFloat(temp1[1])+parseFloat(temp2[1]))/2));
   map.setZoom(14);
   
   routePath.setMap(map);
+  
 
   travel_mode = document.getElementById('mode').value;
   if(travel_mode=="DRIVING"){
@@ -342,46 +335,50 @@ function calcRoute() {
   }
   
   //////set the circle around the moving marker
-  var subjectPoint={
-    radius: 1.0,
-    color: '#1abc9c',
-  }
-  var subjectRange = new google.maps.Circle({
-    map:map,
-    radius:subjectPoint.radius*1000,
-    fillColor: subjectPoint.color,strokeColor:'#3D9912'
-  });
-  //////////////// 
 
-  movingMarker = new google.maps.Marker({
-    icon:movingIcon,
-    draggable:false,
-  });
-  subjectRange.bindTo('center',movingMarker,'position');
 
   var request = {
     origin:new google.maps.LatLng(parseFloat(temp1[0]), parseFloat(temp1[1])),
     destination:new google.maps.LatLng(parseFloat(temp2[0]), parseFloat(temp2[1])),
     travelMode:travel_mode
   };
-
-  //////set an info window to the moving marker
-  var altInfowindow = new google.maps.InfoWindow();
-  altInfowindow.open(map,movingMarker);
   
+  //////set an info window to the moving marker
+  
+      
   directionsService.route(request, function(response, status) {
+    //finish=false;
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
+      
+      movingMarker = new google.maps.Marker({
+      icon:movingIcon,
+      draggable:false,
+      });
 
+      var subjectPoint={
+      radius: 1.0,
+      color: '#1abc9c',
+      }
+      var subjectRange = new google.maps.Circle({
+      map:map,
+      radius:subjectPoint.radius*1000,
+      fillColor: subjectPoint.color,strokeColor:'#3D9912'
+      });
+      subjectRange.bindTo('center',movingMarker,'position');
+
+      altInfowindow = new google.maps.InfoWindow();
+      altInfowindow.open(map,movingMarker);
+      
       var Coordinates = new Array();
-
       var temp = response.routes[0].overview_path;
-          //alert(temp.length);
+
           for(var j = 0;j<temp.length;j++)
           {
             Coordinates.push(new google.maps.LatLng((temp[j].lat()), (temp[j].lng())));
           } 
-          //}
+         
+          CoordinatesSet.unshift(Coordinates);
           
           routePath.setPath(Coordinates);
           
@@ -391,28 +388,34 @@ function calcRoute() {
           subjectPoint.setPoint="Coordinates[0]";
           i=0;
           pathsnum=Coordinates.length;
+          console.log("pathsum is "+pathsnum);
+  
+          Coordinates = CoordinatesSet.pop();
+          
           function resetMkPoint(i){
             movingMarker.set('position',Coordinates[i]);
             subjectPoint.setPoint="Coordinates[i]";
-            altInfowindow.setContent((Coordinates[i]).toString());
+            if(i<pathsnum)
+            altInfowindow.setContent(String(Coordinates[i]));
+            else
+            altInfowindow.close();
             if(i < pathsnum){
               setTimeout(function(){
                 i++;
                 resetMkPoint(i);
-              },550);
+                console.log(i);
+              },1000);
             }
-
-          }
+          }// end of reset function
           setTimeout(function(){
             resetMkPoint(0);
-        //console.log(i);
-             },550);    //////550 is alower than 150
-
-          
+             },550);    //////550 is slower than 150
 
         }
+        //console.log("direction service function finished");
       });
-}
+    //console.log("calculate function finished");
+}//// end of calculate function
 
 function generate_safeRegion(){ ///should pass in l and n value
   var width = 0.005;
